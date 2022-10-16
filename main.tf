@@ -43,7 +43,7 @@ resource "aws_instance" "minecraft" {
   tags = {
     Name = "Minecraft"
   }
-  user_data = templatefile("scripts/startup.sh", { service = file("scripts/minecraft.service") })
+  user_data = templatefile("scripts/startup.sh", { service = file("scripts/minecraft.service"), download_url = var.download_url })
 }
 
 resource "aws_eip" "minecraft" {
