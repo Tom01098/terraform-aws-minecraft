@@ -6,7 +6,9 @@ sudo mkdir /minecraft
 cd /minecraft
 wget ${download_url} -O server.jar
 echo "eula=true" > eula.txt
-sudo chown -R ec2-user /minecraft/
+
+sudo useradd mc
+sudo chown -R mc /minecraft/
 
 sudo echo "${service}" > /etc/systemd/system/minecraft.service
 sudo systemctl daemon-reload
