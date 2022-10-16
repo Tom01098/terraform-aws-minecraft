@@ -6,7 +6,7 @@ terraform {
     }
   }
 }
- 
+
 provider "aws" {
   region = var.region
 }
@@ -20,12 +20,18 @@ data "aws_ami" "amazon_linux_2" {
   }
 }
 
-resource "aws_security_group" "everything" {
-  name = "everything"
+resource "aws_security_group" "minecraft" {
+  name = "Minecraft"
   ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = -1
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 25565
+    to_port     = 25565
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
   egress {
@@ -39,7 +45,7 @@ resource "aws_security_group" "everything" {
 resource "aws_instance" "minecraft" {
   ami             = data.aws_ami.amazon_linux_2.id
   instance_type   = "t2.medium"
-  security_groups = [aws_security_group.everything.name]
+  security_groups = [aws_security_group.minecraft.name]
   tags = {
     Name = "Minecraft"
   }
