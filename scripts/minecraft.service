@@ -1,0 +1,18 @@
+[Unit]
+Description=Minecraft
+After=syslog.target network.target
+
+[Service]
+SuccessExitStatus=143
+
+User=ec2-user
+Group=ec2-user
+
+Type=simple
+
+WorkingDirectory=/minecraft
+ExecStart=/usr/bin/java -jar server.jar nogui
+ExecStop=/bin/kill -15 $MAINPID
+
+[Install]
+WantedBy=multi-user.target
