@@ -11,6 +11,21 @@ provider "aws" {
   region = var.region
 }
 
+data "aws_iam_policy" "cloud_watch_agent" {
+  name = "CloudWatchAgentServerPolicy"
+}
+
+resource "aws_iam_role" "role" {
+  name                = "Minecraft"
+  managed_policy_arns = [data.aws_iam_policy.cloud_watch_agent.arn]
+  assume_role_policy  = file("scripts/assume_role_policy.json")
+}
+
+resource "aws_iam_instance_profile" "profile" {
+  name = "Minecraft"
+  role = aws_iam_role.role.name
+}
+
 data "aws_ami" "amazon_linux_2" {
   owners      = ["amazon"]
   most_recent = true
@@ -43,13 +58,20 @@ resource "aws_security_group" "minecraft" {
 }
 
 resource "aws_instance" "minecraft" {
-  ami             = data.aws_ami.amazon_linux_2.id
-  instance_type   = "t2.medium"
-  security_groups = [aws_security_group.minecraft.name]
+  ami                  = data.aws_ami.amazon_linux_2.id
+  iam_instance_profile = aws_iam_instance_profile.profile.name
+  instance_type        = "t2.medium"
+  security_groups      = [aws_security_group.minecraft.name]
   tags = {
     Name = "Minecraft"
   }
-  user_data = templatefile("scripts/startup.sh", { service = file("scripts/minecraft.service"), download_url = var.download_url })
+  user_data = templatefile(
+    "scripts/startup.sh",
+    {
+      download_url      = var.download_url,
+      service           = file("scripts/minecraft.service")
+    }
+  )
 }
 
 resource "aws_eip" "minecraft" {

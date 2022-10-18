@@ -1,0 +1,19 @@
+{
+    "agent": {
+        "run_as_user": "cwagent"
+    },
+    "logs": {
+        "logs_collected": {
+            "files": {
+                "collect_list": [
+                    {
+                        "file_path": "/minecraft/logs/*.log",
+                        "log_group_name": "/minecraft",
+                        "log_stream_name": "{instance_id}",
+                        "retention_in_days": 1
+                    }
+                ]
+            }
+        }
+    }
+}
