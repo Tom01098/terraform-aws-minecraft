@@ -55,8 +55,12 @@ resource "aws_security_group" "minecraft" {
   }
 }
 
+locals {
+  log_group_name = "minecraft"
+}
+
 resource "aws_cloudwatch_log_group" "minecraft" {
-  name              = "/minecraft"
+  name              = local.log_group_name
   retention_in_days = 1
 }
 
@@ -71,7 +75,7 @@ resource "aws_instance" "minecraft" {
   user_data = templatefile(
     "scripts/startup.sh",
     {
-      agent_config = file("scripts/cloudwatch_agent_config.json")
+      agent_config = templatefile("scripts/cloudwatch_agent_config.json", { log_group_name = local.log_group_name })
       download_url = var.download_url,
       service      = file("scripts/minecraft.service")
     }
