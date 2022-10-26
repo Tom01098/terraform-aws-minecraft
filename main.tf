@@ -71,6 +71,7 @@ resource "aws_instance" "minecraft" {
   user_data = templatefile(
     "scripts/startup.sh",
     {
+      agent_config = file("scripts/cloudwatch_agent_config.json")
       download_url = var.download_url,
       service      = file("scripts/minecraft.service")
     }
