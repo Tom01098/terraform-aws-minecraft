@@ -55,15 +55,6 @@ resource "aws_security_group" "minecraft" {
   }
 }
 
-locals {
-  log_group_name = "minecraft"
-}
-
-resource "aws_cloudwatch_log_group" "minecraft" {
-  name              = local.log_group_name
-  retention_in_days = 1
-}
-
 resource "aws_instance" "minecraft" {
   ami                  = data.aws_ami.amazon_linux_2.id
   iam_instance_profile = aws_iam_instance_profile.profile.name
@@ -75,13 +66,21 @@ resource "aws_instance" "minecraft" {
   user_data = templatefile(
     "scripts/startup.sh",
     {
-      agent_config = templatefile("scripts/cloudwatch_agent_config.json", { log_group_name = local.log_group_name })
+      agent_config = templatefile("scripts/cloudwatch_agent_config.json", { log_group_name = aws_cloudwatch_log_group.minecraft.name })
       download_url = var.download_url,
       service      = file("scripts/minecraft.service")
     }
   )
+}
 
-  depends_on = [aws_cloudwatch_log_group.minecraft]
+resource "aws_cloudwatch_log_group" "minecraft" {
+  name              = "minecraft"
+  retention_in_days = 1
+}
+
+resource "aws_cloudwatch_log_stream" "minecraft" {
+  name = aws_instance.minecraft.id
+  log_group_name = aws_cloudwatch_log_group.minecraft.name
 }
 
 resource "aws_eip" "minecraft" {
