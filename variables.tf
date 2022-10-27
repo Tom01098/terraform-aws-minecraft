@@ -10,6 +10,12 @@ variable "download_url" {
   description = "Minecraft server download URL"
 }
 
+variable "instance_type" {
+  type = string
+  default = "t2.medium"
+  description = "The EC2 instance type of the server. Requires at least t2.medium."
+}
+
 variable "region" {
   type        = string
   default     = "eu-west-2"

@@ -67,7 +67,7 @@ resource "aws_cloudwatch_log_group" "minecraft" {
 resource "aws_instance" "minecraft" {
   ami                  = data.aws_ami.amazon_linux_2.id
   iam_instance_profile = aws_iam_instance_profile.profile.name
-  instance_type        = "t2.medium"
+  instance_type        = var.instance_type
   security_groups      = [aws_security_group.minecraft.name]
   tags = {
     Name = "Minecraft"
