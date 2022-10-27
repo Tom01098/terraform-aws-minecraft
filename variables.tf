@@ -11,8 +11,8 @@ variable "download_url" {
 }
 
 variable "instance_type" {
-  type = string
-  default = "t2.medium"
+  type        = string
+  default     = "t2.medium"
   description = "The EC2 instance type of the server. Requires at least t2.medium."
 }
 
