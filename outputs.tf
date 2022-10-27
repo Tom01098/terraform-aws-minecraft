@@ -1,3 +1,8 @@
+output "ssh" {
+  value       = var.ec2_instance_connect ? "https://${var.region}.console.aws.amazon.com/ec2-instance-connect/ssh?connType=standard&instanceId=${aws_instance.minecraft.id}&osUser=ec2-user&sshPort=22" : null
+  description = "URL to SSH into the server"
+}
+
 output "ip" {
   value       = aws_eip.minecraft.public_ip
   description = "The elastic IPv4 address assigned to the server"
