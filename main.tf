@@ -79,7 +79,7 @@ resource "aws_cloudwatch_log_group" "minecraft" {
 }
 
 resource "aws_cloudwatch_log_stream" "minecraft" {
-  name = aws_instance.minecraft.id
+  name           = aws_instance.minecraft.id
   log_group_name = aws_cloudwatch_log_group.minecraft.name
 }
 
