@@ -36,23 +36,36 @@ data "aws_ami" "amazon_linux_2" {
 }
 
 resource "aws_security_group" "minecraft" {
-  name = "Minecraft"
-  dynamic "ingress" {
-    for_each = concat([25565], var.ec2_instance_connect ? [22] : [])
-    iterator = port
-    content {
-      from_port   = port.value
-      to_port     = port.value
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-  }
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = -1
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  name        = "Minecraft"
+  description = "Minecraft server traffic"
+}
+
+resource "aws_security_group_rule" "minecraft" {
+  type              = "ingress"
+  from_port         = 25565
+  to_port           = 25565
+  protocol          = "tcp"
+  security_group_id = aws_security_group.minecraft.id
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
+resource "aws_security_group_rule" "ssh" {
+  count             = var.ec2_instance_connect ? 1 : 0
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  security_group_id = aws_security_group.minecraft.id
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
+resource "aws_security_group_rule" "egress" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "all"
+  security_group_id = aws_security_group.minecraft.id
+  cidr_blocks       = ["0.0.0.0/0"]
 }
 
 resource "aws_instance" "minecraft" {
