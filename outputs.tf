@@ -4,8 +4,8 @@ output "ssh" {
 }
 
 output "ip" {
-  value       = aws_eip.minecraft.public_ip
-  description = "The elastic IPv4 address assigned to the server"
+  value       = var.static_ip ? aws_eip.minecraft[0].public_ip : aws_instance.minecraft.public_ip
+  description = "The IPv4 address assigned to the server"
 }
 
 output "logs" {

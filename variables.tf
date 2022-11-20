@@ -21,3 +21,9 @@ variable "region" {
   default     = "eu-west-2"
   description = "AWS region to deploy to"
 }
+
+variable "static_ip" {
+  type        = bool
+  default     = false
+  description = "Should the instance retain its IPv4 address after being stopped? Charges apply while the server is stopped."
+}

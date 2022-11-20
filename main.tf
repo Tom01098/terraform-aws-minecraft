@@ -108,5 +108,6 @@ resource "aws_cloudwatch_log_stream" "minecraft" {
 }
 
 resource "aws_eip" "minecraft" {
+  count    = var.static_ip ? 1 : 0
   instance = aws_instance.minecraft.id
 }
