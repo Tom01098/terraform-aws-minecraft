@@ -15,10 +15,21 @@ data "aws_iam_policy" "cloud_watch_agent" {
   name = "CloudWatchAgentServerPolicy"
 }
 
+data "aws_iam_policy_document" "assume_role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
 resource "aws_iam_role" "role" {
   name                = "Minecraft"
   managed_policy_arns = [data.aws_iam_policy.cloud_watch_agent.arn]
-  assume_role_policy  = file("scripts/assume_role_policy.json")
+  assume_role_policy  = data.aws_iam_policy_document.assume_role.json
 }
 
 resource "aws_iam_instance_profile" "profile" {
