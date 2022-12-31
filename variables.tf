@@ -6,7 +6,7 @@ variable "ec2_instance_connect" {
 
 variable "download_url" {
   type        = string
-  default     = "https://piston-data.mojang.com/v1/objects/f69c284232d7c7580bd89a5a4931c3581eae1378/server.jar"
+  default     = "https://piston-data.mojang.com/v1/objects/c9df48efed58511cdd0213c56b9013a7b5c9ac1f/server.jar"
   description = "Minecraft server download URL"
 }
 
