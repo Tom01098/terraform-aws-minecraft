@@ -5,9 +5,18 @@ variable "ec2_instance_connect" {
 }
 
 variable "download_url" {
+  type        = map
+  default = {
+    "1.19.3" = "https://piston-data.mojang.com/v1/objects/c9df48efed58511cdd0213c56b9013a7b5c9ac1f/server.jar"
+    "1.19.2" = "next url"
+  }
+  description = "Minecraft server versions and download links in a map"
+}
+
+variable "server_version" {
   type        = string
-  default     = "https://piston-data.mojang.com/v1/objects/c9df48efed58511cdd0213c56b9013a7b5c9ac1f/server.jar"
-  description = "Minecraft server download URL"
+  default = "1.19.3"
+  description = "Minecraft server version"
 }
 
 variable "instance_type" {
