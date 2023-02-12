@@ -1,0 +1,9 @@
+VPC, EFS, Spot price instance, autoscalingroup, security group, ssh key, set dns for elastic ip(lambda), 
+
+
+
+
+docker image: https://github.com/itzg/docker-minecraft-server/blob/master/README.md
+spot pricing: https://github.com/vatertime/minecraft-spot-pricing
+
+https://www.youtube.com/watch?v=iRaai1IBlB0 1:05

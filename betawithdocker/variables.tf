@@ -4,7 +4,7 @@ variable "ec2_instance_connect" {
 }
 
 variable "download_url" {
-  type        = map
+  type        = map(any)
   description = "Minecraft server versions and download links in a map"
 }
 

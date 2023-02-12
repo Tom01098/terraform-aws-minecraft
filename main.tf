@@ -91,7 +91,7 @@ resource "aws_instance" "minecraft" {
     "scripts/startup.sh",
     {
       agent_config = templatefile("scripts/cloudwatch_agent_config.json", { log_group_name = aws_cloudwatch_log_group.minecraft.name })
-      download_url = var.download_url,
+      download_url = var.download_url[var.server_version],
       service      = file("scripts/minecraft.service")
     }
   )
